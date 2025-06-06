@@ -9,7 +9,40 @@
         state: present
       tags:
         - prepare-servers
-  
+    
+    - name: "Создать директорию /opt/redmine"
+      ansible.builtin.file:
+        path: /opt/redmine
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      tags:
+        - install-redmine
+    
+    - name: "Создать переменные из шаблона"
+      ansible.builtin.template:
+        src: env.j2
+        dest: /opt/redmine/.env
+        owner: root
+        group: root
+        mode: 0600
+      tags:
+        - install-redmine
+          
+    - name: "Установить Redmine на ВМ"
+      community.docker.docker_container:
+        name: redmine
+        image: redmine:6.0
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "{{redmine_port}}:3000"
+        env_file: /opt/redmine/.env
+        volumes:
+          - "redmine_data:/usr/src/redmine/files"
+      tags:
+        - install-redmine
         
   roles:
     - role: geerlingguy.pip
