@@ -53,6 +53,8 @@ make vault-encrypt
 make deploy
 ```
 
+Приложение можно посмотреть по адресу [repositorium.shop](https://repositorium.shop/)
+
 ## Документация Yandex cloud
 
 [Yandex Compute Cloud](https://yandex.cloud/ru/docs/compute)
