@@ -41,6 +41,9 @@
         - install-redmine
         
   roles:
+    - role: geerlingguy.pip
+      tags:
+        - prepare-servers
     - role: geerlingguy.docker
       tags:
         - prepare-servers
