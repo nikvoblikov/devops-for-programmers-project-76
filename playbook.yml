@@ -2,14 +2,6 @@
   become: yes
   
   tasks:
-    - name: "Установим pip3"
-      package:
-        name:
-          - python3-pip
-        state: present
-      tags:
-        - prepare-servers
-        
     - name: "Создать директорию /opt/redmine"
       ansible.builtin.file:
         path: /opt/redmine
