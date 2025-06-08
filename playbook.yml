@@ -2,14 +2,6 @@
   become: yes
   
   tasks:
-    - name: "Установим pip3"
-      package:
-        name:
-          - python3-pip
-        state: present
-      tags:
-        - prepare-servers
-    
     - name: "Создать директорию /opt/redmine"
       ansible.builtin.file:
         path: /opt/redmine
@@ -31,6 +23,7 @@
         - install-redmine
           
     - name: "Установить Redmine на ВМ"
+      # Модуль управляет инфраструктурой docker
       community.docker.docker_container:
         name: redmine
         image: redmine:6.0
@@ -41,14 +34,22 @@
         env_file: /opt/redmine/.env
         volumes:
           - "redmine_data:/usr/src/redmine/files"
+        labels:
+          com.datadoghq.tags.service: "redmine"
+          com.datadoghq.tags.env: "production"
       tags:
         - install-redmine
         
   roles:
-    - role: geerlingguy.pip
-      tags:
-        - prepare-servers
-      
     - role: geerlingguy.docker
       tags:
         - prepare-servers
+
+- hosts: webservers
+  become: yes
+  vars:
+    datadog_api_key: "{{ DATADOG_API_KEY }}"
+  
+  roles:
+    - role: datadog.dd.agent
+      tags: monitoring
