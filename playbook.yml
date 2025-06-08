@@ -1,5 +1,5 @@
 - name: "Развёртывание Redmine в облаке"
-- hosts: all
+  hosts: all
   become: true
 
   tasks:
@@ -50,7 +50,7 @@
         - prepare-servers
 
 - name: "Настройка мониторинга Datadog"
-- hosts: webservers
+  hosts: webservers
   become: true
   vars:
     datadog_api_key: "{{ DATADOG_API_KEY }}"
