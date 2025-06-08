@@ -38,8 +38,8 @@
         labels:
           com.datadoghq.tags.service: "redmine"
           com.datadoghq.tags.env: "production"
-        tags:
-          - install-redmine
+      tags:
+        - install-redmine
 
   roles:
     - role: geerlingguy.pip
