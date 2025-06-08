@@ -1,8 +1,8 @@
-# Установить необходимые роли
+# Установить необходимые роли и коллекции
 pre-install:
 	ansible-galaxy install -r requirements.yml
 
-# Установка необходимых пакетов на удаленные серверы
+# Подготовка целевых машин
 prepare-servers:
 	ansible-playbook -i inventory.ini playbook.yml -t prepare-servers
 
@@ -18,3 +18,7 @@ vault-encrypt:
 # Деплой приложения
 deploy:
 	ansible-playbook -i inventory.ini playbook.yml -t install-redmine --ask-vault-pass
+
+# Добавление мониторинга
+monitoring:
+	ansible-playbook -i inventory.ini playbook.yml -t monitoring --ask-vault-pass

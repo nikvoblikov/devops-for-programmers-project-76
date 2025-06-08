@@ -3,28 +3,18 @@
 
 ## Перед началом работы
 
-Проверьте, есть ли у вас модуль ansible для работы с докером:
-```bash
-ansible-doc docker_image
-```
-
-Если появилась документация, то модуль есть. В противном случае установите модуль:
-```bash
-ansible-galaxy collection install community.docker 
-```
-
-После этого можно запустить команду из `Makefile` для подготовки вэб-серверов и установки пакетного менеджера `pip` и `docker`.
-
-Установите необходимые роли локально:
+Установите необходимы роли и коллекции:
 ```bash
 make pre-install
 ```
 
-Мы предполагаем деплой на yandex cloud. Подготовьте всю инфрастукруту на стороне облака. Подключтесь к своим виртуальным машинам по ssh.
+Мы предполагаем деплой на yandex cloud. Подготовьте всю инфрастукруту на стороне облака. Подключитесь к своим виртуальным машинам по ssh.
+
 После чего подготовьте их, запустив команду:
 ```bash
 make prepare-servers
 ```
+При этом на целевых ВМ установится докер, запустится его демон, создаться необходимый юзер.
 
 ## Деплой приложения Redmine на удаленный сервер
 
@@ -53,11 +43,23 @@ make vault-encrypt
 make deploy
 ```
 
+Во время деплоя на целевых машинах запуститься докер образ Redmine, произойдет его подключение к базе данных `MySql`, накатятся необходимые миграции.
+
+Проверьте состояние виртуальных машин и балансировщика нагрузки.
+
 Приложение можно посмотреть по адресу [repositorium.shop](https://repositorium.shop/)
+
+## Добавление мониторинга Datadog
+
+Зарегестрируйтесь на Datadog, получите ключ api и добавьте его в `vault.yml`.
+После чего запустите команду:
+```bash
+make monitoring
+```
 
 ## Документация Yandex cloud
 
-[Yandex Compute Cloud](https://yandex.cloud/ru/docs/compute)
-[Yandex Application Load Balancer](https://yandex.cloud/ru/docs/application-load-balancer)
-[Yandex Virtual Private Cloud](https://yandex.cloud/ru/docs/vpc)
-[Yandex Managed Service for MySQL](https://yandex.cloud/ru/docs/managed-mysql)
+- [Yandex Compute Cloud](https://yandex.cloud/ru/docs/compute)
+- [Yandex Application Load Balancer](https://yandex.cloud/ru/docs/application-load-balancer)
+- [Yandex Virtual Private Cloud](https://yandex.cloud/ru/docs/vpc)
+- [Yandex Managed Service for MySQL](https://yandex.cloud/ru/docs/managed-mysql)
