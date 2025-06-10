@@ -1,4 +1,5 @@
 # Переменные для Datadog
+datadog_api_key: "{{ vault_datadog_api_key }}" 
 datadog_site: "datadoghq.eu"
 datadog_config:
   tags:
