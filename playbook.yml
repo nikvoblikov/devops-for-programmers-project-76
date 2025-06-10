@@ -5,7 +5,7 @@
   tasks:
     - name: "Создать директорию /opt/redmine"
       ansible.builtin.file:
-        path: /opt/redmine
+        path: "{{ redmine_opt_folder }}"
         state: directory
         owner: root
         group: root
@@ -16,7 +16,7 @@
     - name: "Создать переменные из шаблона"
       ansible.builtin.template:
         src: env.j2
-        dest: /opt/redmine/.env
+        dest: "{{ redmine_opt_folder }}/.env"
         owner: root
         group: root
         mode: "0600"
@@ -32,7 +32,7 @@
         restart_policy: unless-stopped
         ports:
           - "{{ redmine_port }}:3000"
-        env_file: /opt/redmine/.env
+        env_file: "{{ redmine_opt_folder }}/.env"
         volumes:
           - "redmine_data:/usr/src/redmine/files"
         labels:
@@ -52,8 +52,6 @@
 - name: "Настройка мониторинга Datadog"
   hosts: webservers
   become: true
-  vars:
-    datadog_api_key: "{{ DATADOG_API_KEY }}"
 
   roles:
     - role: datadog.dd.agent
